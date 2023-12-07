@@ -1,0 +1,1211 @@
+---
+title: "datascience1"
+author: "Md Mehedi"
+date: "2023-11-02"
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#install.packages('knitr')
+#install.packages('markdown')
+library(knitr)
+library(markdown)
+```
+
+
+
+```{r}
+#library("FactoMineR")
+#library("factoextra")
+#library(vcd)
+
+```
+
+```{r}
+library(dplyr)
+finaldata=read.csv("D:\\paper\\mics\\data\\finaldata.csv")
+#View(finaldata)
+ 
+#finaldata$childbirthweight3='3'
+#finaldata$childbirthweight3[finaldata$childbirthweight==1|finaldata$childbirthweight==2]='1'
+#finaldata$childbirthweight3[finaldata$childbirthweight==4|finaldata$childbirthweight==5]='5'
+
+finaldata$childbirthweight3[finaldata$childbirthweight3==3]='average'
+finaldata$childbirthweight3[finaldata$childbirthweight==1]='overweight'
+finaldata$childbirthweight3[finaldata$childbirthweight==2]='overweight'
+
+finaldata$childbirthweight3[finaldata$childbirthweight==4]='verypoor'
+finaldata$childbirthweight3[finaldata$childbirthweight==5]='verypoor'
+finaldata$childbirthweight3[is.na(finaldata$childbirthweight)]='DK'
+#sum(is.na(finaldata$childbirthweight3))
+#finaldata$homedelivery[finaldata$homedelivery==0]='0'
+#finaldata$homedelivery[finaldata$homedelivery==1]='1'
+
+finaldata$homedelivery[finaldata$homedelivery==0]='hospital'
+finaldata$homedelivery[finaldata$homedelivery==1]='home'
+
+finaldata$windex3[finaldata$windex5==2]='poor'
+finaldata$windex3[finaldata$windex5==1]='poor'
+
+finaldata$windex3[finaldata$windex5==3]='middle'
+finaldata$windex3[finaldata$windex5==4]='rich' 
+finaldata$windex3[finaldata$windex5==5]='rich' 
+#finaldata$windex3[finaldata$windex5==1|finaldata$windex5==2]='1'
+#finaldata$windex3[finaldata$windex5==3]='3'
+#finaldata$windex3[finaldata$windex5==4|finaldata$windex5==5]='5' 
+
+finaldata$ANC[finaldata$ANC==2]='no'
+finaldata$ANC[is.na(finaldata$ANC)|finaldata$ANC==9]='DK'
+finaldata$ANC[finaldata$ANC==1]='yes'
+
+#finaldata$ANC[finaldata$ANC==2|9]='0'
+#finaldata$ANC[is.na(finaldata$ANC)]='0'
+#finaldata$ANC[finaldata$ANC==1]='1'
+
+#finaldata$nochildbirth[is.na(finaldata$nochildbirth)]=1
+
+#finaldata$disability[finaldata$disability==2]='0'
+#finaldata$disability[is.na(finaldata$disability)]='0'
+#finaldata$disability[finaldata$disability==1]='1'
+
+finaldata$disability[finaldata$disability==2]='no'
+finaldata$disability[is.na(finaldata$disability)]='DK'
+finaldata$disability[finaldata$disability==1]='yes'
+
+#finaldata$chage[is.na(finaldata$chage)]=mean(finaldata$chage)
+
+#finaldata$cdisability[finaldata$cdisability==1]='1'
+#finaldata$cdisability[finaldata$cdisability==2]='0'
+#finaldata$cdisability[is.na(finaldata$cdisability)]='0'
+
+finaldata$cdisability[finaldata$cdisability==1]='yes'
+finaldata$cdisability[finaldata$cdisability==2]='no'
+finaldata$cdisability[is.na(finaldata$cdisability)]='DK'
+
+
+finaldata$melevel[finaldata$melevel==9| is.na(finaldata$melevel)]='DK'
+finaldata$melevel[finaldata$melevel==0]='noedu'
+finaldata$melevel[finaldata$melevel==1]='primary'
+finaldata$melevel[finaldata$melevel==2]='secondary'
+finaldata$melevel[finaldata$melevel==3]='higher'
+
+#finaldata$melevel[finaldata$melevel==9]='0'
+#finaldata$melevel[finaldata$melevel==0]='0'
+#finaldata$melevel[finaldata$melevel==1]='1'
+#finaldata$melevel[finaldata$melevel==2]='2'
+#finaldata$melevel[finaldata$melevel==3]='3'
+
+
+#finaldata$division[finaldata$division==10]='10'
+#finaldata$division[finaldata$division==30]='30'
+#finaldata$division[finaldata$division==40]='40'
+#finaldata$division[finaldata$division==45]='45'
+#finaldata$division[finaldata$division==50]='50'
+#finaldata$division[finaldata$division==55]='55'
+#finaldata$division[finaldata$division==20]='20'
+#finaldata$division[finaldata$division==60]='60'
+
+finaldata$division[finaldata$division==10]='dhaka'
+finaldata$division[finaldata$division==30]='comilla'
+finaldata$division[finaldata$division==40]='borishal'
+finaldata$division[finaldata$division==45]='shylhet'
+finaldata$division[finaldata$division==50]='khulna'
+finaldata$division[finaldata$division==55]='chitagong'
+finaldata$division[finaldata$division==20]='maymenshing'
+finaldata$division[finaldata$division==60]='rangpur'
+
+#finaldata$sex[finaldata$sex==1]='1'
+#finaldata$sex[finaldata$sex==2]='2'
+
+finaldata$sex[finaldata$sex==1]='male'
+finaldata$sex[finaldata$sex==2]='female'
+
+#finaldata$area[finaldata$area==1]='1'
+#finaldata$area[finaldata$area==2]='2'
+
+finaldata$area[finaldata$area==1]='urban'
+finaldata$area[finaldata$area==2]='rural'
+
+#finaldata$helevel[finaldata$helevel==9]='0'
+#finaldata$helevel[finaldata$helevel==0]='0'
+#finaldata$helevel[finaldata$helevel==1]='1'
+#finaldata$helevel[finaldata$helevel==2]='2'
+#finaldata$helevel[finaldata$helevel==3]='3'
+
+finaldata$helevel[finaldata$helevel==9| is.na(finaldata$helevel)]='DK'
+finaldata$helevel[finaldata$helevel==0]='noedu'
+finaldata$helevel[finaldata$helevel==1]='primary'
+finaldata$helevel[finaldata$helevel==2]='secondary'
+finaldata$helevel[finaldata$helevel==3]='higher'
+
+
+#finaldata$sanitation[finaldata$sanitation==0]='0'
+#finaldata$sanitation[finaldata$sanitation==1]='1'
+#finaldata$sanitation[finaldata$sanitation==2]='2'
+
+finaldata$sanitation[finaldata$sanitation==0]='open'
+finaldata$sanitation[finaldata$sanitation==1]='notflush'
+finaldata$sanitation[finaldata$sanitation==2]='flush'
+
+#finaldata$pwater[finaldata$pwater==1]='1'
+#finaldata$pwater[finaldata$pwater==0]='0'
+
+finaldata$pwater[finaldata$pwater==1]='tubewel'
+finaldata$pwater[finaldata$pwater==0]='not tubewel'
+
+#finaldata$iodin[finaldata$iodin==1]='1'
+#finaldata$iodin[finaldata$iodin==0]='0'
+#finaldata$iodin[finaldata$iodin==2]='2'
+
+finaldata$iodin[finaldata$iodin==1]='0to15ppm'
+finaldata$iodin[finaldata$iodin==0]='noiodin'
+finaldata$iodin[finaldata$iodin==2]='15high'
+
+
+#finaldata$wageatb[is.na(finaldata$wageatb)]=mean(finaldata$wageatb)
+
+finaldata$illness[finaldata$illness==1]='yes'
+finaldata$illness[finaldata$illness==0]='no'
+#finaldata$illness[is.na(finaldata$illness)]='no'
+
+#finaldata$illness[finaldata$illness==1]='1'
+#finaldata$illness[finaldata$illness==0]='0'
+#finaldata$illness[is.na(finaldata$illness)]='0'
+
+#finaldata$antibiotic[finaldata$antibiotic==1]='1'
+#finaldata$antibiotic[finaldata$antibiotic==0]='0'
+
+finaldata$antibiotic[finaldata$antibiotic==1]='yes'
+finaldata$antibiotic[finaldata$antibiotic==0]='no'
+
+finaldata$underweight=0   # not underweight
+#View(datawaz)
+finaldata$underweight[finaldata$WAZ2< -2]=1
+
+finaldata$stunted=0   # not underweight
+#View(datawaz)
+finaldata$stunted[finaldata$HAZ2< -2]=1
+
+finaldata$wasted=0   # not underweight
+#View(datawaz)
+finaldata$wasted[finaldata$WHZ2< -2]=1
+
+finaldata$overweight=0  # not underweight
+#View(datawaz)
+finaldata$overweight[finaldata$WHZ2> 2]=1
+
+
+
+#Factdata=subset(finaldata, select=c("ANC","homedelivery","disability","cdisability","melevel","illness",
+#"antibiotic","division","sex","area","helevel","sanitation","pwater","iodin","windex3", "childbirthweight3", #"underweight","stunted","wasted","overweight"))
+
+#Factdata=subset(finaldata, select=c("nochildbirth","ANC","homedelivery","disability","chage","cdisability","melevel","illness",
+#"antibiotic","division","sex","area","hhsize","helevel","sanitation","pwater","iodin",        
+#"wageatb","windex3", "childbirthweight3", "underweight","stunted","wasted","overweight"))
+
+
+Factdata=subset(finaldata, select=c("nochildbirth","homedelivery","disability","chage","melevel","illness",
+"antibiotic","division","sex","area","hhsize","helevel","sanitation","pwater","iodin",        
+"wageatb","windex3",  "underweight","stunted","wasted","overweight"))
+#colnames(Factdata)
+#View(Factdata)
+factordata=Factdata
+
+
+#write.csv(Factdata,"D://UCF//Fall_23//STA6366Datascience1//datasceicne.csv")
+```
+
+
+```{r}
+set.seed(111)
+ind <- sample(2, nrow(factordata),
+              replace = TRUE,
+              prob = c(0.80, 0.2))
+train <- factordata[ind==1,]
+#View(training)
+test <- factordata[ind==2,]
+dim(train)
+```
+"nochildbirth","homedelivery","disability","chage","melevel","illness",
+"antibiotic","division","sex","area","hhsize","helevel","sanitation","pwater","iodin",        
+"wageatb","windex3",  "underweight","stunted","wasted","overweight"
+# Bivariate Chi-sqaure test
+
+```{r}
+chisq.test(factordata$nochildbirth, factordata$underweight)
+chisq.test(factordata$homedelivery, factordata$underweight)
+chisq.test(factordata$disability, factordata$underweight)
+var.test(factordata$chage, factordata$underweight, alternative = "two.sided")
+chisq.test(factordata$melevel, factordata$underweight)
+chisq.test(factordata$illness, factordata$underweight)
+chisq.test(factordata$antibiotic, factordata$underweight)
+chisq.test(factordata$division, factordata$underweight)
+chisq.test(factordata$sex, factordata$underweight)
+chisq.test(factordata$area, factordata$underweight)
+chisq.test(factordata$hhsize, factordata$underweight)
+chisq.test(factordata$helevel, factordata$underweight)
+chisq.test(factordata$sanitation, factordata$underweight)
+chisq.test(factordata$pwater, factordata$underweight)
+chisq.test(factordata$iodin, factordata$underweight)
+var.test(factordata$wageatb, factordata$underweight)
+chisq.test(factordata$windex3, factordata$underweight)
+
+```
+```{r}
+chisq.test(factordata$nochildbirth, factordata$stunted)
+chisq.test(factordata$homedelivery, factordata$stunted)
+chisq.test(factordata$disability, factordata$stunted)
+var.test(factordata$chage, factordata$stunted, alternative = "two.sided")
+chisq.test(factordata$melevel, factordata$stunted)
+chisq.test(factordata$illness, factordata$stunted)
+chisq.test(factordata$antibiotic, factordata$stunted)
+chisq.test(factordata$division, factordata$stunted)
+chisq.test(factordata$sex, factordata$stunted)
+chisq.test(factordata$area, factordata$stunted)
+chisq.test(factordata$hhsize, factordata$stunted)
+chisq.test(factordata$helevel, factordata$stunted)
+chisq.test(factordata$sanitation, factordata$stunted)
+chisq.test(factordata$pwater, factordata$stunted)
+chisq.test(factordata$iodin, factordata$stunted)
+var.test(factordata$wageatb, factordata$stunted)
+chisq.test(factordata$windex3, factordata$stunted)
+```
+```{r}
+chisq.test(factordata$nochildbirth, factordata$wasted)
+chisq.test(factordata$homedelivery, factordata$wasted)
+chisq.test(factordata$disability, factordata$wasted)
+var.test(factordata$chage, factordata$wasted, alternative = "two.sided")
+chisq.test(factordata$melevel, factordata$wasted)
+chisq.test(factordata$illness, factordata$wasted)
+chisq.test(factordata$antibiotic, factordata$wasted)
+chisq.test(factordata$division, factordata$wasted)
+chisq.test(factordata$sex, factordata$wasted)
+chisq.test(factordata$area, factordata$wasted)
+chisq.test(factordata$hhsize, factordata$wasted)
+chisq.test(factordata$helevel, factordata$wasted)
+chisq.test(factordata$sanitation, factordata$wasted)
+chisq.test(factordata$pwater, factordata$wasted)
+chisq.test(factordata$iodin, factordata$wasted)
+var.test(factordata$wageatb, factordata$wasted)
+chisq.test(factordata$windex3, factordata$wasted)
+```
+```{r}
+chisq.test(factordata$nochildbirth, factordata$overweight)
+chisq.test(factordata$homedelivery, factordata$overweight)
+chisq.test(factordata$disability, factordata$overweight)
+var.test(factordata$chage, factordata$overweight, alternative = "two.sided")
+chisq.test(factordata$melevel, factordata$overweight)
+chisq.test(factordata$illness, factordata$overweight)
+chisq.test(factordata$antibiotic, factordata$overweight)
+chisq.test(factordata$division, factordata$overweight)
+chisq.test(factordata$sex, factordata$overweight)
+chisq.test(factordata$area, factordata$overweight)
+chisq.test(factordata$hhsize, factordata$overweight)
+chisq.test(factordata$helevel, factordata$overweight)
+chisq.test(factordata$sanitation, factordata$overweight)
+chisq.test(factordata$pwater, factordata$overweight)
+chisq.test(factordata$iodin, factordata$overweight)
+var.test(factordata$wageatb, factordata$overweight)
+chisq.test(factordata$windex3, factordata$overweight)
+```
+
+
+# Logistic regression by MCA method
+
+```{r}
+#install.packages("ROSE")
+library(ROSE)
+
+
+
+mca_train<- MCA(train[,-c(17,18,19,20)],ncp=10, graph=FALSE)
+
+summary(mca_train)
+#mca_train$ind$coord
+
+mca_features <- as.data.frame(mca_train$ind$contrib)
+
+
+mca_features=scale(round(mca_features*1000,3))
+
+mca_data<- data.frame(cbind(mca_features, underweight = train$underweight))
+
+
+logit_underweight <- glm(underweight ~., data = undersample, family = binomial(link = 'logit'))
+summary(logit_underweight)
+mca_test<- MCA(test[,-c(17,18,19,20)], ncp=10,graph=FALSE)
+
+mca_testfeature <- as.data.frame(mca_test$ind$contrib)
+
+#mca_testfeature=scale(mca_testfeature)
+#View(mca_features)
+# Combine MCA features with the outcome variable
+test_mca_data <- data.frame(cbind(Intercept = 1, mca_testfeature))
+
+predictions <- predict(logit_underweight, newdata = test_mca_data, type = "response")
+
+prediction=ifelse(predictions>0.50,1,0)
+#length(prediction)
+table(prediction)
+
+mca_test <- cbind(mca_testfeature, underweight = test$underweight)
+
+conf_underweight=table(mca_test$underweight,prediction)
+accur_underweight <- sum(diag(conf_underweight)) / sum(conf_underweight)
+accur_underweight
+speci_und=conf_underweight[1,1]/(conf_underweight[1,1]+conf_underweight[1,2])
+sensi_und=conf_underweight[2,2]/(conf_underweight[2,1]+conf_underweight[2,2])
+cbind(accur_underweight,speci_und,sensi_und)
+```
+
+
+```{r}
+mca_train<- MCA(train[,-c(17,18,19,20)], graph=FALSE)
+
+mca_features <- as.data.frame(mca_train$ind$contrib)
+
+mca_data<- cbind(mca_features, stunted = train$stunted)
+#View(mca_data)
+logit_stunted <- glm(stunted ~., data = mca_data, family = binomial(link = 'cloglog'))
+
+mca_test<- MCA(test[,-c(17,18,19,20)], graph=FALSE)
+
+mca_testfeature <- as.data.frame(mca_test$ind$contrib)
+#View(mca_features)
+# Combine MCA features with the outcome variable
+test_mca_data <- cbind(Intercept = 1, mca_testfeature)
+
+predictions <- predict(logit_stunted, newdata = test_mca_data, type = "response")
+
+prediction=ifelse(predictions>0.50,1,0)
+#length(prediction)
+table(prediction)
+mca_test <- cbind(mca_testfeature, stunted = test$stunted)
+
+conf_stunted=table(mca_test$stunted,prediction)
+accur_stunted <- sum(diag(conf_stunted)) / sum(conf_stunted)
+accur_stunted
+speci_stunted=conf_stunted[1,1]/(conf_stunted[1,1]+conf_stunted[1,2])
+sensi_stunted=conf_stunted[2,2]/(conf_stunted[2,1]+conf_stunted[2,2])
+cbind(accur_stunted,speci_stunted,sensi_stunted)
+```
+
+```{r}
+mca_train<- MCA(train[,-c(11,12,13,14)], graph=FALSE)
+
+mca_features <- as.data.frame(mca_train$ind$contrib)
+
+mca_data<- cbind(mca_features, wasted = train$wasted)
+
+logit_wasted <- glm(wasted ~., data = mca_data, family = binomial(link='cloglog'))
+
+mca_test<- MCA(test[,-c(11,12,13,14)], graph=FALSE)
+
+mca_testfeature <- as.data.frame(mca_test$ind$contrib)
+#View(mca_features)
+# Combine MCA features with the outcome variable
+test_mca_data <- cbind(Intercept = 1, mca_testfeature)
+predictions <- predict(logit_wasted, newdata = test_mca_data, type = "response")
+
+prediction=ifelse(predictions>0.50,1,0)
+#length(prediction)
+mca_test <- cbind(mca_testfeature, wasted = test$wasted)
+
+conf_wasted=table(mca_test$wasted,prediction)
+accur_wasted <- sum(diag(conf_wasted)) / sum(conf_wasted)
+accur_wasted
+speci_wasted=conf_wasted[1,1]/(conf_wasted[1,1]+conf_wasted[1,2])
+sensi_wasted=conf_wasted[2,2]/(conf_wasted[2,1]+conf_wasted[2,2])
+cbind(accur_wasted,speci_wasted,sensi_wasted)
+
+```
+
+```{r}
+mca_train<- MCA(train[,-c(11,12,13,14)], graph=FALSE)
+
+mca_features <- as.data.frame(mca_train$ind$contrib)
+
+mca_data<- cbind(mca_features, overweight = train$overweight)
+
+logit_overweight <- glm(overweight ~., data = mca_data, family = "binomial")
+
+mca_test<- MCA(test[,-c(11,12,13,14)], graph=FALSE)
+
+mca_testfeature <- as.data.frame(mca_test$ind$contrib)
+#View(mca_features)
+# Combine MCA features with the outcome variable
+test_mca_data <- cbind(Intercept = 1, mca_testfeature)
+predictions <- predict(logit_overweight, newdata = test_mca_data, type = "response")
+
+prediction=ifelse(predictions>0.50,1,0)
+#length(prediction)
+mca_test <- cbind(mca_testfeature, overweight = test$overweight)
+
+conf_over=table(mca_test$overweight,prediction)
+accur_over <- sum(diag(conf_over)) / sum(conf_over)
+accur_over
+
+speci_over=conf_over[1,1]/(conf_over[1,1]+conf_over[1,2])
+sensi_over=conf_over[2,2]/(conf_over[2,1]+conf_over[2,2])
+cbind(accur_over,speci_over,sensi_over)
+```
+
+
+
+#### LASSO FOR LOGIT  for underweight
+
+```{r}
+
+underdata=factordata[,-c(19,20,21)]
+undersample <- ovun.sample(underweight ~., data=underdata,
+                                N=nrow(underdata), p=0.5, 
+                                seed=1, method="both")$data
+
+#View(undersample)
+#table(undersample$underweight)
+set.seed(111)
+ind <- sample(2, nrow(undersample),
+              replace = TRUE,
+              prob = c(0.80, 0.2))
+train <- undersample[ind==1,]
+#View(training)
+test <- undersample[ind==2,]
+
+
+library(glmnet)
+train=na.omit(train)
+test=na.omit(test)
+#dim(test)
+# Creating a binary response variable
+train_underweight <- train$underweight
+length(train_underweight)
+# Creating a matrix of predictor variables
+train_predictors <- data.matrix(train[,-18])
+#dim(train_predictors)
+
+# Split the data into training and test sets
+#train_index <- sample(1:n, 0.8 * n)  # 80% for training
+#train_data <- predictors[train_index, ]
+#train_response <- response[train_index]
+#test_data <- predictors[-train_index, ]
+#test_response <- response[-train_index]
+testdata=data.matrix(test[,-18])
+#dim(testdata)
+test_underweight=test$underweight
+# Fit Lasso logistic regression on the training data
+lasso_underweight <- cv.glmnet(train_predictors, train_underweight, family = binomial(link='logit'), alpha = 1)
+
+# Display the optimal lambda value selected by cross-validation
+best_lambda <- lasso_underweight$lambda.min
+cat("Optimal lambda value:", best_lambda, "\n")
+lasso_underweight$beta
+# Extract coefficients with dimension reduction
+coefficients <- coef(lasso_underweight, s = best_lambda)
+print("Selected Features and Coefficients:")
+print(coefficients)
+
+# Make predictions on the test set
+predictions <- predict(lasso_underweight, newx = testdata, type = "response")
+length(predictions)
+# Convert predicted probabilities to binary predictions (0 or 1)
+binary_predictions <- ifelse(predictions > 0.5, 1, 0)
+length(binary_predictions)
+undertable=table(test_underweight,binary_predictions)
+
+sensunder=undertable[2,2]/(undertable[2,1]+undertable[2,2])
+specunder=undertable[1,1]/(undertable[1,1]+undertable[1,2])
+accuunder=sum(diag(undertable))/sum(undertable)
+
+undergoodness=cbind(sensunder,specunder,accuunder)
+# Calculate accuracy
+
+```
+
+
+# LASSO for stunted
+```{r}
+# Creating a binary response variable
+stunteddata=factordata[,-c(18,20,21)]
+undersample <- ovun.sample(stunted ~., data=stunteddata,
+                                N=nrow(stunteddata), p=0.5, 
+                                seed=1, method="both")$data
+
+#View(undersample)
+#table(undersample$underweight)
+set.seed(111)
+ind <- sample(2, nrow(undersample),
+              replace = TRUE,
+              prob = c(0.80, 0.2))
+train <- undersample[ind==1,]
+#View(training)
+test <- undersample[ind==2,]
+
+
+library(glmnet)
+train=na.omit(train)
+test=na.omit(test)
+#dim(test)
+# Creating a binary response variable
+train_stunted <- train$stunted
+length(train_underweight)
+# Creating a matrix of predictor variables
+train_predictors <- data.matrix(train[,-18])
+#dim(train_predictors)
+
+# Split the data into training and test sets
+#train_index <- sample(1:n, 0.8 * n)  # 80% for training
+#train_data <- predictors[train_index, ]
+#train_response <- response[train_index]
+#test_data <- predictors[-train_index, ]
+#test_response <- response[-train_index]
+testdata=data.matrix(test[,-18])
+#dim(testdata)
+test_stunted=test$stunted
+# Fit Lasso logistic regression on the training data
+lasso_stunted <- cv.glmnet(train_predictors, train_stunted, family = binomial(link='logit'), alpha = 1)
+
+# Display the optimal lambda value selected by cross-validation
+#best_lambda <- lasso_underweight$lambda.min
+#cat("Optimal lambda value:", best_lambda, "\n")
+#lasso_underweight$beta
+# Extract coefficients with dimension reduction
+#coefficients <- coef(lasso_underweight, s = best_lambda)
+#print("Selected Features and Coefficients:")
+#print(coefficients)
+
+# Make predictions on the test set
+predictions <- predict(lasso_stunted, newx = testdata, type = "response")
+length(predictions)
+# Convert predicted probabilities to binary predictions (0 or 1)
+binary_predictions <- ifelse(predictions > 0.5, 1, 0)
+length(binary_predictions)
+undertable=table(test_stunted,binary_predictions)
+
+sensunder=undertable[2,2]/(undertable[2,1]+undertable[2,2])
+specunder=undertable[1,1]/(undertable[1,1]+undertable[1,2])
+accuunder=sum(diag(undertable))/sum(undertable)
+
+stuntedgoodness=cbind(sensunder,specunder,accuunder)
+
+```
+# LASSO for wasted
+```{r}
+wasteddata=factordata[,-c(18,19,21)]
+undersample <- ovun.sample(wasted ~., data=wasteddata,
+                                N=nrow(wasteddata), p=0.5, 
+                                seed=1, method="both")$data
+
+#View(undersample)
+#table(undersample$underweight)
+set.seed(111)
+ind <- sample(2, nrow(undersample),
+              replace = TRUE,
+              prob = c(0.80, 0.2))
+train <- undersample[ind==1,]
+#View(training)
+test <- undersample[ind==2,]
+
+
+library(glmnet)
+train=na.omit(train)
+test=na.omit(test)
+#dim(test)
+# Creating a binary response variable
+train_wasted <- train$wasted
+#length(train_underweight)
+# Creating a matrix of predictor variables
+train_predictors <- data.matrix(train[,-18])
+dim(train_predictors)
+
+# Split the data into training and test sets
+#train_index <- sample(1:n, 0.8 * n)  # 80% for training
+#train_data <- predictors[train_index, ]
+#train_response <- response[train_index]
+#test_data <- predictors[-train_index, ]
+#test_response <- response[-train_index]
+testdata=data.matrix(test[,-18])
+#dim(testdata)
+test_wasted=test$wasted
+# Fit Lasso logistic regression on the training data
+lasso_wasted <- cv.glmnet(train_predictors, train_wasted, family = binomial(link='logit'), alpha = 1)
+
+# Display the optimal lambda value selected by cross-validation
+#best_lambda <- lasso_underweight$lambda.min
+#cat("Optimal lambda value:", best_lambda, "\n")
+#lasso_underweight$beta
+# Extract coefficients with dimension reduction
+#coefficients <- coef(lasso_underweight, s = best_lambda)
+#print("Selected Features and Coefficients:")
+#print(coefficients)
+
+# Make predictions on the test set
+predictions <- predict(lasso_wasted, newx = testdata, type = "response")
+length(predictions)
+# Convert predicted probabilities to binary predictions (0 or 1)
+binary_predictions <- ifelse(predictions > 0.5, 1, 0)
+length(binary_predictions)
+undertable=table(test_wasted,binary_predictions)
+
+sensunder=undertable[2,2]/(undertable[2,1]+undertable[2,2])
+specunder=undertable[1,1]/(undertable[1,1]+undertable[1,2])
+accuunder=sum(diag(undertable))/sum(undertable)
+
+wastedgoodness=cbind(sensunder,specunder,accuunder)
+# Calculate accuracy
+```
+# LASSO for overweight
+
+```{r}
+overdata=factordata[,-c(18,19,20)]
+undersample <- ovun.sample(overweight ~., data=overdata,
+                                N=nrow(overdata), p=0.5, 
+                                seed=1, method="both")$data
+
+#View(undersample)
+#table(undersample$underweight)
+set.seed(111)
+ind <- sample(2, nrow(undersample),
+              replace = TRUE,
+              prob = c(0.80, 0.2))
+train <- undersample[ind==1,]
+#View(training)
+test <- undersample[ind==2,]
+
+
+library(glmnet)
+train=na.omit(train)
+test=na.omit(test)
+#dim(test)
+# Creating a binary response variable
+train_overweight <- train$overweight
+#length(train_underweight)
+# Creating a matrix of predictor variables
+train_predictors <- data.matrix(train[,-18])
+#dim(train_predictors)
+
+# Split the data into training and test sets
+#train_index <- sample(1:n, 0.8 * n)  # 80% for training
+#train_data <- predictors[train_index, ]
+#train_response <- response[train_index]
+#test_data <- predictors[-train_index, ]
+#test_response <- response[-train_index]
+testdata=data.matrix(test[,-18])
+#dim(testdata)
+test_overweight=test$overweight
+# Fit Lasso logistic regression on the training data
+lasso_overweight <- cv.glmnet(train_predictors, train_overweight, family = binomial(link='logit'), alpha = 1)
+
+# Display the optimal lambda value selected by cross-validation
+#best_lambda <- lasso_underweight$lambda.min
+#cat("Optimal lambda value:", best_lambda, "\n")
+#lasso_underweight$beta
+# Extract coefficients with dimension reduction
+#coefficients <- coef(lasso_underweight, s = best_lambda)
+#print("Selected Features and Coefficients:")
+#print(coefficients)
+
+# Make predictions on the test set
+predictions <- predict(lasso_overweight, newx = testdata, type = "response")
+length(predictions)
+# Convert predicted probabilities to binary predictions (0 or 1)
+binary_predictions <- ifelse(predictions > 0.5, 1, 0)
+length(binary_predictions)
+undertable=table(test_overweight,binary_predictions)
+
+sensunder=undertable[2,2]/(undertable[2,1]+undertable[2,2])
+specunder=undertable[1,1]/(undertable[1,1]+undertable[1,2])
+accuunder=sum(diag(undertable))/sum(undertable)
+
+overweightgoodness=cbind(sensunder,specunder,accuunder)
+
+cbind(var=c('underweight', 'stunted','wasted','overweight'),rbind(undergoodness,stuntedgoodness,wastedgoodness,overweightgoodness))
+```
+# FAMD with logistic
+```{r}
+library("FactoMineR")
+library("factoextra")
+underdata=factordata[,-c(19,20,21)]
+undersample <- ovun.sample(underweight ~., data=underdata,
+                                N=nrow(underdata), p=0.5, 
+                                seed=1, method="both")$data
+
+#View(undersample)
+#table(undersample$underweight)
+set.seed(111)
+ind <- sample(2, nrow(undersample),
+              replace = TRUE,
+              prob = c(0.80, 0.2))
+train <- undersample[ind==1,]
+#View(training)
+test <- undersample[ind==2,]
+table(train$underweight)
+
+#trainfamd <- FAMD(train[,-18], graph = FALSE)
+
+mca_train<- FAMD(train[,-18],ncp=10, graph=FALSE)
+
+#summary(mca_train)
+#mca_train$ind$coord
+#summary(mca_train)
+
+mca_features <- as.data.frame(mca_train$ind$contrib)
+
+
+#mca_features=scale(round(mca_features*1000,3))
+
+mca_data<- data.frame(cbind(mca_features, underweight = train$underweight))
+
+
+logit_underweight <- glm(underweight ~., data = mca_data, family = binomial(link = 'logit'))
+summary(logit_underweight)
+mca_test<- FAMD(test[,-c(18,19,20,21)], ncp=10,graph=FALSE)
+
+mca_testfeature <- as.data.frame(mca_test$ind$contrib)
+
+#mca_testfeature=scale(mca_testfeature)
+#View(mca_features)
+# Combine MCA features with the outcome variable
+test_mca_data <- data.frame(cbind(Intercept = 1, mca_testfeature))
+
+predictions <- predict(logit_underweight, newdata = test_mca_data, type = "response")
+
+prediction=ifelse(predictions>0.50,1,0)
+#length(prediction)
+table(prediction)
+
+mca_test <- cbind(mca_testfeature, underweight = test$underweight)
+
+conf_underweight=table(mca_test$underweight,prediction)
+accur_underweight <- sum(diag(conf_underweight)) / sum(conf_underweight)
+accur_underweight
+speci_und=conf_underweight[1,1]/(conf_underweight[1,1]+conf_underweight[1,2])
+sensi_und=conf_underweight[2,2]/(conf_underweight[2,1]+conf_underweight[2,2])
+underweight=cbind(sensi_und,speci_und,accur_underweight)
+```
+
+```{r}
+library("FactoMineR")
+library("factoextra")
+underdata=factordata[,-c(18,20,21)]
+undersample <- ovun.sample(stunted ~., data=underdata,
+                                N=nrow(underdata), p=0.5, 
+                                seed=1, method="both")$data
+
+#View(undersample)
+#table(undersample$underweight)
+set.seed(111)
+ind <- sample(2, nrow(undersample),
+              replace = TRUE,
+              prob = c(0.80, 0.2))
+train <- undersample[ind==1,]
+#View(training)
+test <- undersample[ind==2,]
+table(train$underweight)
+
+#trainfamd <- FAMD(train[,-18], graph = FALSE)
+
+mca_train<- FAMD(train[,-18],ncp=10, graph=FALSE)
+
+#summary(mca_train)
+#mca_train$ind$coord
+#summary(mca_train)
+
+mca_features <- as.data.frame(mca_train$ind$contrib)
+
+
+#mca_features=scale(round(mca_features*1000,3))
+
+mca_data<- data.frame(cbind(mca_features, stunted = train$stunted))
+
+
+logit_underweight <- glm(stunted ~., data = mca_data, family = binomial(link = 'logit'))
+#summary(logit_underweight)
+mca_test<- FAMD(test[,-c(18,19,20,21)], ncp=10,graph=FALSE)
+
+mca_testfeature <- as.data.frame(mca_test$ind$contrib)
+
+#mca_testfeature=scale(mca_testfeature)
+#View(mca_features)
+# Combine MCA features with the outcome variable
+test_mca_data <- data.frame(cbind(Intercept = 1, mca_testfeature))
+
+predictions <- predict(logit_underweight, newdata = test_mca_data, type = "response")
+
+prediction=ifelse(predictions>0.50,1,0)
+#length(prediction)
+table(prediction)
+
+mca_test <- cbind(mca_testfeature, stunted = test$stunted)
+
+conf_underweight=table(mca_test$stunted,prediction)
+accur_underweight <- sum(diag(conf_underweight)) / sum(conf_underweight)
+accur_underweight
+speci_und=conf_underweight[1,1]/(conf_underweight[1,1]+conf_underweight[1,2])
+sensi_und=conf_underweight[2,2]/(conf_underweight[2,1]+conf_underweight[2,2])
+stunted=cbind(sensi_und,speci_und,accur_underweight)
+```
+
+```{r}
+underdata=factordata[,-c(18,19,21)]
+undersample <- ovun.sample(wasted ~., data=underdata,
+                                N=nrow(underdata), p=0.5, 
+                                seed=1, method="both")$data
+
+#View(undersample)
+#table(undersample$underweight)
+set.seed(111)
+ind <- sample(2, nrow(undersample),
+              replace = TRUE,
+              prob = c(0.80, 0.2))
+train <- undersample[ind==1,]
+#View(training)
+test <- undersample[ind==2,]
+table(train$wasted)
+
+#trainfamd <- FAMD(train[,-18], graph = FALSE)
+
+mca_train<- FAMD(train[,-18],ncp=10, graph=FALSE)
+
+#summary(mca_train)
+#mca_train$ind$coord
+#summary(mca_train)
+
+mca_features <- as.data.frame(mca_train$ind$contrib)
+
+
+#mca_features=scale(round(mca_features*1000,3))
+
+mca_data<- data.frame(cbind(mca_features, wasted = train$wasted))
+
+
+logit_underweight <- glm(wasted ~., data = mca_data, family = binomial(link = 'logit'))
+#summary(logit_underweight)
+mca_test<- FAMD(test[,-c(18,19,20,21)], ncp=10,graph=FALSE)
+
+mca_testfeature <- as.data.frame(mca_test$ind$contrib)
+
+#mca_testfeature=scale(mca_testfeature)
+#View(mca_features)
+# Combine MCA features with the outcome variable
+test_mca_data <- data.frame(cbind(Intercept = 1, mca_testfeature))
+
+predictions <- predict(logit_underweight, newdata = test_mca_data, type = "response")
+
+prediction=ifelse(predictions>0.50,1,0)
+#length(prediction)
+table(prediction)
+
+mca_test <- cbind(mca_testfeature, wasted = test$wasted)
+
+conf_underweight=table(mca_test$wasted,prediction)
+accur_underweight <- sum(diag(conf_underweight)) / sum(conf_underweight)
+accur_underweight
+speci_und=conf_underweight[1,1]/(conf_underweight[1,1]+conf_underweight[1,2])
+sensi_und=conf_underweight[2,2]/(conf_underweight[2,1]+conf_underweight[2,2])
+wasted=cbind(sensi_und,speci_und,accur_underweight)
+```
+# Underweight
+
+```{r}
+underdata=factordata[,-c(18,19,20)]
+undersample <- ovun.sample(overweight ~., data=underdata,
+                                N=nrow(underdata), p=0.5, 
+                                seed=1, method="both")$data
+
+#View(undersample)
+#table(undersample$underweight)
+set.seed(111)
+ind <- sample(2, nrow(undersample),
+              replace = TRUE,
+              prob = c(0.80, 0.2))
+train <- undersample[ind==1,]
+#View(training)
+test <- undersample[ind==2,]
+table(train$overweight)
+
+#trainfamd <- FAMD(train[,-18], graph = FALSE)
+
+mca_train<- FAMD(train[,-18],ncp=10, graph=FALSE)
+
+#summary(mca_train)
+#mca_train$ind$coord
+#summary(mca_train)
+
+mca_features <- as.data.frame(mca_train$ind$contrib)
+
+
+#mca_features=scale(round(mca_features*1000,3))
+
+mca_data<- data.frame(cbind(mca_features, overweight = train$overweight))
+
+
+logit_underweight <- glm(overweight ~., data = mca_data, family = binomial(link = 'logit'))
+#summary(logit_underweight)
+mca_test<- FAMD(test[,-c(18,19,20,21)], ncp=10,graph=FALSE)
+
+mca_testfeature <- as.data.frame(mca_test$ind$contrib)
+
+#mca_testfeature=scale(mca_testfeature)
+#View(mca_features)
+# Combine MCA features with the outcome variable
+test_mca_data <- data.frame(cbind(Intercept = 1, mca_testfeature))
+
+predictions <- predict(logit_underweight, newdata = test_mca_data, type = "response")
+
+prediction=ifelse(predictions>0.50,1,0)
+#length(prediction)
+table(prediction)
+
+mca_test <- cbind(mca_testfeature, overweight = test$overweight)
+
+conf_underweight=table(mca_test$overweight,prediction)
+accur_underweight <- sum(diag(conf_underweight)) / sum(conf_underweight)
+accur_underweight
+speci_und=conf_underweight[1,1]/(conf_underweight[1,1]+conf_underweight[1,2])
+sensi_und=conf_underweight[2,2]/(conf_underweight[2,1]+conf_underweight[2,2])
+overweight=cbind(sensi_und,speci_und,accur_underweight)
+goodness=cbind(var=c('underweight','staunted','wasted','overweight'),rbind(underweight,stunted,wasted,overweight))
+```
+
+# SVM underweight
+
+```{r}
+underdata=factordata[,-c(19,20,21)]
+undersample <- ovun.sample(underweight ~., data=underdata,
+                                N=nrow(underdata), p=0.5, 
+                                seed=1, method="both")$data
+
+set.seed(111)
+ind <- sample(2, nrow(undersample),
+              replace = TRUE,
+              prob = c(0.80, 0.2))
+train <- undersample[ind==1,]
+#View(training)
+test <- undersample[ind==2,]
+
+
+#SVM_train<- train[,-c(17,18,19,20)]
+#SVM_train<- train[,-c(18,19,20)]
+#table(train$illness)
+SVM_train=na.omit(train)
+dim(SVM_train)
+#SVM_data<- cbind(mca_features, stunted = train$stunted)
+#View(mca_data)
+SVM_train$underweight = factor(SVM_train$underweight, levels = c(0, 1)) 
+
+#logit_stunted <- glm(stunted ~., data = mca_data, family = "binomial")
+
+
+#SVM_test$underweight = factor(SVM_test$underweight, levels = c(0, 1)) 
+
+#SVM_test <- cbind(Intercept = 1, SVM_test)
+
+SVM_test=na.omit(test)
+dim(SVM_test)
+test_underweight=as.factor(SVM_test$underweight)
+length(test_underweight)
+SVM_test<- test[,-18]
+#dim(SVM_test)
+
+table(test_underweight)
+# Fitting SVM to the Training set 
+#install.packages('e1071') 
+library(e1071) 
+
+SVMclassifier = svm(underweight ~ ., 
+                 data = SVM_train, 
+                 type = 'C-classification', 
+                 kernel = 'linear') 
+
+y_pred = predict(SVMclassifier, newdata = SVM_test) 
+
+conunderweight=table(test_underweight,y_pred)
+
+#confusionMatrix(test_underweight,y_pred)
+sen=conunderweight[2,2]/(conunderweight[2,2]+conunderweight[2,1])
+spec=conunderweight[1,1]/(conunderweight[1,1]+conunderweight[1,2])
+accu=sum(diag(conunderweight))/sum(conunderweight)
+goodunderweight=cbind(sen,spec,accu)
+```
+
+# SVM stunted
+```{r}
+underdata=factordata[,-c(18,20,21)]
+undersample <- ovun.sample(stunted ~., data=underdata,
+                                N=nrow(underdata), p=0.5, 
+                                seed=1, method="both")$data
+
+set.seed(111)
+ind <- sample(2, nrow(undersample),
+              replace = TRUE,
+              prob = c(0.80, 0.2))
+train <- undersample[ind==1,]
+#View(training)
+test <- undersample[ind==2,]
+
+
+#SVM_train<- train[,-c(17,18,19,20)]
+#SVM_train<- train[,-c(18,19,20)]
+#table(train$illness)
+SVM_train=na.omit(train)
+dim(SVM_train)
+#SVM_data<- cbind(mca_features, stunted = train$stunted)
+#View(mca_data)
+SVM_train$stunted = factor(SVM_train$stunted, levels = c(0, 1)) 
+
+#logit_stunted <- glm(stunted ~., data = mca_data, family = "binomial")
+
+
+#SVM_test$underweight = factor(SVM_test$underweight, levels = c(0, 1)) 
+
+#SVM_test <- cbind(Intercept = 1, SVM_test)
+
+SVM_test=na.omit(test)
+dim(SVM_test)
+test_stunted=as.factor(SVM_test$stunted)
+#table(SVM_test$stunted)
+SVM_test<- test[,-18]
+#dim(SVM_test)
+
+#table(test_underweight)
+# Fitting SVM to the Training set 
+#install.packages('e1071') 
+library(e1071) 
+
+SVMclassifier = svm(stunted ~ ., 
+                 data = SVM_train, 
+                 type = 'C-classification', 
+                 kernel = 'linear') 
+
+y_pred = predict(SVMclassifier, newdata = SVM_test) 
+
+conunderweight=table(test_stunted,y_pred)
+
+#confusionMatrix(test_underweight,y_pred)
+sen=conunderweight[2,2]/(conunderweight[2,2]+conunderweight[2,1])
+spec=conunderweight[1,1]/(conunderweight[1,1]+conunderweight[1,2])
+accu=sum(diag(conunderweight))/sum(conunderweight)
+goodstunted=cbind(sen,spec,accu)
+```
+
+# SVM for wasted
+```{r}
+underdata=factordata[,-c(18,19,21)]
+undersample <- ovun.sample(wasted ~., data=underdata,
+                                N=nrow(underdata), p=0.5, 
+                                seed=1, method="both")$data
+
+set.seed(111)
+ind <- sample(2, nrow(undersample),
+              replace = TRUE,
+              prob = c(0.80, 0.2))
+train <- undersample[ind==1,]
+#View(training)
+test <- undersample[ind==2,]
+
+SVM_train=na.omit(train)
+dim(SVM_train)
+#SVM_data<- cbind(mca_features, stunted = train$stunted)
+#View(mca_data)
+SVM_train$wasted = factor(SVM_train$wasted, levels = c(0, 1)) 
+
+#logit_stunted <- glm(stunted ~., data = mca_data, family = "binomial")
+
+
+#SVM_test$underweight = factor(SVM_test$underweight, levels = c(0, 1)) 
+
+#SVM_test <- cbind(Intercept = 1, SVM_test)
+
+SVM_test=na.omit(test)
+dim(SVM_test)
+test_wasted=as.factor(SVM_test$wasted)
+#table(SVM_test$stunted)
+SVM_test<- test[,-18]
+#dim(SVM_test)
+
+#table(test_underweight)
+# Fitting SVM to the Training set 
+#install.packages('e1071') 
+library(e1071) 
+
+SVMclassifier = svm(wasted ~ ., 
+                 data = SVM_train, 
+                 type = 'C-classification', 
+                 kernel = 'linear') 
+
+y_pred = predict(SVMclassifier, newdata = SVM_test) 
+
+conunderweight=table(test_wasted,y_pred)
+
+#confusionMatrix(test_underweight,y_pred)
+sen=conunderweight[2,2]/(conunderweight[2,2]+conunderweight[2,1])
+spec=conunderweight[1,1]/(conunderweight[1,1]+conunderweight[1,2])
+accu=sum(diag(conunderweight))/sum(conunderweight)
+goodswasted=cbind(sen,spec,accu)
+```
+# SVM for overweight
+
+```{r}
+underdata=factordata[,-c(18,19,20)]
+undersample <- ovun.sample(overweight ~., data=underdata,
+                                N=nrow(underdata), p=0.5, 
+                                seed=1, method="both")$data
+
+set.seed(111)
+ind <- sample(2, nrow(undersample),
+              replace = TRUE,
+              prob = c(0.80, 0.2))
+train <- undersample[ind==1,]
+#View(training)
+test <- undersample[ind==2,]
+
+SVM_train=na.omit(train)
+dim(SVM_train)
+#SVM_data<- cbind(mca_features, stunted = train$stunted)
+#View(mca_data)
+SVM_train$overweight = factor(SVM_train$overweight, levels = c(0, 1)) 
+
+#logit_stunted <- glm(stunted ~., data = mca_data, family = "binomial")
+
+
+#SVM_test$underweight = factor(SVM_test$underweight, levels = c(0, 1)) 
+
+#SVM_test <- cbind(Intercept = 1, SVM_test)
+
+SVM_test=na.omit(test)
+dim(SVM_test)
+test_overweight=as.factor(SVM_test$overweight)
+#table(SVM_test$stunted)
+SVM_test<- test[,-18]
+#dim(SVM_test)
+
+#table(test_underweight)
+# Fitting SVM to the Training set 
+#install.packages('e1071') 
+library(e1071) 
+
+SVMclassifier = svm(overweight ~ ., 
+                 data = SVM_train, 
+                 type = 'C-classification', 
+                 kernel = 'linear') 
+
+y_pred = predict(SVMclassifier, newdata = SVM_test) 
+
+conunderweight=table(test_overweight,y_pred)
+
+#confusionMatrix(test_underweight,y_pred)
+sen=conunderweight[2,2]/(conunderweight[2,2]+conunderweight[2,1])
+spec=conunderweight[1,1]/(conunderweight[1,1]+conunderweight[1,2])
+accu=sum(diag(conunderweight))/sum(conunderweight)
+goodsoverweight=cbind(sen,spec,accu)
+
+cbind(var=c('underweight','stunted','wasted','overweight'),rbind(goodunderweight,goodstunted,goodswasted,goodsoverweight))
+```
+
